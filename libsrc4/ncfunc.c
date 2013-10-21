@@ -115,3 +115,23 @@ NC4_inq_format(int ncid, int *formatp)
 }
 
 
+/* Get the extended format of an open file. */
+int
+NC4_inq_format_extended(int ncid, int *formatp)
+{
+   NC *nc;
+   NC *nc;
+   NC_HDF5_FILE_INFO_T* h5;
+
+   LOG((2, "nc_inq_format_extended: ncid 0x%x", ncid));
+
+   /* Find the file metadata. */
+   if (!(nc = nc4_find_nc_file(ncid,&h5)))
+      return NC_EBADID;
+
+    if(formatp) {
+	/* Distinguish HDF5 from HDF4 */
+	*formatp = (h5->hdf4 ? NC_FORMAT_HDF4 : NC_FORMAT_HDF5);
+    }
+   return NC_NOERR;
+}
