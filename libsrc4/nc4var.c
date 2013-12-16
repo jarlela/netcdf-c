@@ -861,6 +861,10 @@ nc_def_var_extra(int ncid, int varid, int *shuffle, int *deflate,
    /* Chunksizes anyone? */
    if (contiguous && *contiguous == NC_CHUNKED)
    {
+      /* For scalars, just ignore attempt to set chunking. */
+      if (!var->ndims)
+        return NC_NOERR;
+
       var->contiguous = 0;
 
       /* If the user provided chunksizes, check that they are not too
